@@ -3,6 +3,12 @@
 Author: Siming Fan
 Date: January 2020
 '''
+import matplotlib.pyplot as plt
+from nuscenes.nuscenes import NuScenes
+import ipdb
+import argparse
+from nuscenes_object import *
+import _pickle as pickle
 import os
 import sys
 import numpy as np
@@ -17,12 +23,8 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.join(ROOT_DIR, 'mayavi'))
 #import kitti_util as utils
-import _pickle as pickle
-from nuscenes_object import *
-import argparse
-import ipdb
-from nuscenes.nuscenes import NuScenes
-import matplotlib.pyplot as plt
+
+
 def in_hull(p, hull):
     from scipy.spatial import Delaunay
     if not isinstance(hull, Delaunay):
@@ -45,6 +47,7 @@ def extract_pc_in_box2d(pc, box2d):
     box2d_corners[3, :] = [box2d[0], box2d[3]]
     box2d_roi_inds = in_hull(pc[:, 0:2], box2d_corners)
     return pc[box2d_roi_inds, :], box2d_roi_inds
+
 
 class Box2d:
     """ Simple data class representing a 2d box including, label, score. """
@@ -77,6 +80,7 @@ class Box2d:
         self.token = token
         self.visibility = visibility
         self.filename = filename
+
     def render(self,
                axis: Axes,
                view: np.ndarray = np.eye(3),
@@ -93,35 +97,42 @@ class Box2d:
         :param linewidth: Width in pixel of the box sides.
         """
 
-        axis.plot([self.corners[0], self.corners[0]], [self.corners[1],self.corners[3]], color=colors[0], linewidth=linewidth)
-        axis.plot([self.corners[2], self.corners[2]], [self.corners[1], self.corners[3]], color=colors[0],linewidth=linewidth)
-        axis.plot([self.corners[0], self.corners[2]], [self.corners[1], self.corners[1]], color=colors[0],linewidth=linewidth)
-        axis.plot([self.corners[0], self.corners[2]], [self.corners[3], self.corners[3]], color=colors[0],linewidth=linewidth)
+        axis.plot([self.corners[0], self.corners[0]], [self.corners[1],
+                  self.corners[3]], color=colors[0], linewidth=linewidth)
+        axis.plot([self.corners[2], self.corners[2]], [self.corners[1],
+                  self.corners[3]], color=colors[0], linewidth=linewidth)
+        axis.plot([self.corners[0], self.corners[2]], [self.corners[1],
+                  self.corners[1]], color=colors[0], linewidth=linewidth)
+        axis.plot([self.corners[0], self.corners[2]], [self.corners[3],
+                  self.corners[3]], color=colors[0], linewidth=linewidth)
 
 
-def get_boxes2d(sample_data_token: str, image_annotations_token2ind = {}, image_annotations = []):
-    nusc = NuScenes(version='v1.0-mini', dataroot='dataset/nuScenes/v1.0-mini', verbose=True)
+def get_boxes2d(sample_data_token: str, image_annotations_token2ind={}, image_annotations=[]):
+    nusc = NuScenes(version='v1.0-mini',
+                    dataroot='dataset/nuScenes/v1.0-mini', verbose=True)
     # Retrieve sensor & pose records
     sd_record = nusc.get('sample_data', sample_data_token)
     curr_sample_record = nusc.get('sample', sd_record['sample_token'])
-    #curr_sample_record['image_anns']
+    # curr_sample_record['image_anns']
 
     boxes2d = []
     if curr_sample_record['prev'] == "" or sd_record['is_key_frame']:
         # If no previous annotations available, or if sample_data is keyframe just return the current ones.
-        for i,x in enumerate(curr_sample_record['anns']):
+        for i, x in enumerate(curr_sample_record['anns']):
             record = nusc.get('sample_annotation', x)
             instance_token = record['instance_token']
             record2d = image_annotations[image_annotations_token2ind[instance_token]]
             box2d = Box2d(record2d['bbox_corners'], name=record2d['category_name'], token=record2d['sample_annotation_token'],
-                          visibility=record2d['visibility_token'],filename=record2d['filename'])
+                          visibility=record2d['visibility_token'], filename=record2d['filename'])
             boxes2d.append(box2d)
 
     else:
         prev_sample_record = nusc.get('sample', curr_sample_record['prev'])
 
-        curr_ann_recs = [nusc.get('sample_annotation', token) for token in curr_sample_record['anns']]
-        prev_ann_recs = [nusc.get('sample_annotation', token) for token in prev_sample_record['anns']]
+        curr_ann_recs = [nusc.get('sample_annotation', token)
+                         for token in curr_sample_record['anns']]
+        prev_ann_recs = [nusc.get('sample_annotation', token)
+                         for token in prev_sample_record['anns']]
 
         # Maps instance tokens to prev_ann records
         prev_inst_map = {entry['instance_token']: entry for entry in prev_ann_recs}
@@ -146,7 +157,8 @@ def get_boxes2d(sample_data_token: str, image_annotations_token2ind = {}, image_
 
                 # Interpolate orientation.
                 rotation = Quaternion.slerp(q0=Quaternion(prev_ann_rec['rotation']),
-                                            q1=Quaternion(curr_ann_rec['rotation']),
+                                            q1=Quaternion(
+                                                curr_ann_rec['rotation']),
                                             amount=(t - t0) / (t1 - t0))
 
                 box = Box(center, curr_ann_rec['size'], rotation, name=curr_ann_rec['category_name'],
@@ -157,6 +169,7 @@ def get_boxes2d(sample_data_token: str, image_annotations_token2ind = {}, image_
 
             boxes.append(box)
     return boxes2d
+
 
 def get_color(category_name: str) -> Tuple[int, int, int]:
     """
@@ -174,23 +187,27 @@ def get_color(category_name: str) -> Tuple[int, int, int]:
     else:
         return 255, 0, 255  # Magenta
 
-def render_image_annotations(sample_data_token: str, with_anns: bool = True, out_path = None,
+
+def render_image_annotations(sample_data_token: str, with_anns: bool = True, out_path=None,
                              box_vis_level: BoxVisibility = BoxVisibility.ANY,
-                             axes_limit: float = 40,ax: Axes = None, image_annotations_token2ind = {},
-                             image_annotations = [],visibilities = ['','1','2','3','4'],cam_type = 'CAM_FRONT'):
+                             axes_limit: float = 40, ax: Axes = None, image_annotations_token2ind={},
+                             image_annotations=[], visibilities=['', '1', '2', '3', '4'], cam_type='CAM_FRONT'):
     _cam_type = '/' + cam_type + '/'
-    nusc = NuScenes(version='v1.0-mini', dataroot='dataset/nuScenes/v1.0-mini', verbose=True)
+    nusc = NuScenes(version='v1.0-mini',
+                    dataroot='dataset/nuScenes/v1.0-mini', verbose=True)
     # Get sensor modality.
     sd_record = nusc.get('sample_data', sample_data_token)
-    sensor_modality = sd_record['sensor_modality']#'camera'
+    sensor_modality = sd_record['sensor_modality']  # 'camera'
     '''
     data_path, boxes, camera_intrinsic = nusc.get_sample_data(sample_data_token,
                                                                    box_vis_level=box_vis_level)
     '''
-    cs_record = nusc.get('calibrated_sensor', sd_record['calibrated_sensor_token'])
+    cs_record = nusc.get('calibrated_sensor',
+                         sd_record['calibrated_sensor_token'])
     sensor_record = nusc.get('sensor', cs_record['sensor_token'])
     pose_record = nusc.get('ego_pose', sd_record['ego_pose_token'])
-    data_path = nusc.get_sample_data_path(sample_data_token)#'dataset/nuScenes/v1.0-mini/samples/CAM_FRONT/n015-2018-07-24-11-22-45+0800__CAM_FRONT__1532402927612460.jpg'
+    # 'dataset/nuScenes/v1.0-mini/samples/CAM_FRONT/n015-2018-07-24-11-22-45+0800__CAM_FRONT__1532402927612460.jpg'
+    data_path = nusc.get_sample_data_path(sample_data_token)
 
     camera_intrinsic = np.array(cs_record['camera_intrinsic'])
     imsize = (sd_record['width'], sd_record['height'])
@@ -232,8 +249,6 @@ def render_image_annotations(sample_data_token: str, with_anns: bool = True, out
         box2d_list.append(box2d)
     '''
 
-
-
     data = Image.open(data_path)
 
     # Init axes.
@@ -245,33 +260,36 @@ def render_image_annotations(sample_data_token: str, with_anns: bool = True, out
     # Show boxes.
     if with_anns:
         for box2d in boxes2d:
-            print(box2d.corners, box2d.name,box2d.filename[8:22])
+            print(box2d.corners, box2d.name, box2d.filename[8:22])
             print(box2d.token)
             c = np.array(get_color(box2d.name)) / 255.0
-            #ipdb.set_trace()
+            # ipdb.set_trace()
             if box2d.visibility in visibilities and (_cam_type in box2d.filename):
-                box2d.render(ax, view=camera_intrinsic, normalize=True, colors=(c, c, c))
+                box2d.render(ax, view=camera_intrinsic,
+                             normalize=True, colors=(c, c, c))
 
     # Limit visible range.
     #ax.set_xlim(0, data.size[0])
     #ax.set_ylim(data.size[1], 0)
-    #ax.axis('off')
+    # ax.axis('off')
     ax.set_title(sd_record['channel'])
-    #ax.set_aspect('equal')
+    # ax.set_aspect('equal')
 
     if out_path is not None:
         plt.savefig(out_path)
+
 
 def demo():
     import mayavi.mlab as mlab
     from viz_util import draw_lidar, draw_lidar_simple, draw_gt_boxes3d
     #dataset = nuscenes_object(os.path.join(ROOT_DIR, 'dataset/nuScenes/v1.0-mini'))
 
-    nusc = NuScenes(version='v1.0-mini', dataroot='dataset/nuScenes/v1.0-mini', verbose=True)
+    nusc = NuScenes(version='v1.0-mini',
+                    dataroot='dataset/nuScenes/v1.0-mini', verbose=True)
     my_scene = nusc.scene[0]
     # Load data from dataset
-    #objects = dataset.get_label_objects(data_idx)  # objects = [Object3d(line) for line in lines]
-    #objects[0].print_object()
+    # objects = dataset.get_label_objects(data_idx)  # objects = [Object3d(line) for line in lines]
+    # objects[0].print_object()
     # 1. scene
     # 2. sample
     first_sample_token = my_scene['first_sample_token']
@@ -301,18 +319,19 @@ def demo():
                              image_annotations = image_annotations,visibilities = ['','1','2','3','4'],cam_type=sensor)
     nusc.render_sample_data(cam_front_data['token'])
     '''
-    sensors = ['CAM_FRONT','CAM_FRONT_RIGHT','CAM_BACK_RIGHT','CAM_BACK','CAM_BACK_LEFT','CAM_FRONT_LEFT']
+    sensors = ['CAM_FRONT', 'CAM_FRONT_RIGHT', 'CAM_BACK_RIGHT',
+               'CAM_BACK', 'CAM_BACK_LEFT', 'CAM_FRONT_LEFT']
     for sensor in sensors[:2]:
         sensor_data = nusc.get('sample_data', my_sample['data'][sensor])
-        render_image_annotations(sensor_data['token'],image_annotations_token2ind=image_annotations_token2ind,
-                                 image_annotations = image_annotations,visibilities = ['','1','2','3','4'],cam_type=sensor)
+        render_image_annotations(sensor_data['token'], image_annotations_token2ind=image_annotations_token2ind,
+                                 image_annotations=image_annotations, visibilities=['', '1', '2', '3', '4'], cam_type=sensor)
         nusc.render_sample_data(sensor_data['token'])
 
     # 4. sample_annotation
     #my_annotation_token = my_sample['anns'][0]
     #my_annotation_metadata = nusc.get('sample_annotation', my_annotation_token)
-    #print("my_annotation_metadata",my_annotation_metadata)
-    #nusc.render_annotation(my_annotation_token)
+    # print("my_annotation_metadata",my_annotation_metadata)
+    # nusc.render_annotation(my_annotation_token)
 
     # 5. instance
     # 6. category
@@ -324,9 +343,12 @@ def demo():
     # 12. log
     # 13. map
 
-    nusc.render_pointcloud_in_image(my_sample['token'], pointsensor_channel='LIDAR_TOP')
-    nusc.render_sample_data(my_sample['data']['LIDAR_TOP'], nsweeps=5, underlay_map=True)
-    nusc.render_sample_data(my_sample['data']['RADAR_FRONT_RIGHT'], nsweeps=5, underlay_map=True)
+    nusc.render_pointcloud_in_image(
+        my_sample['token'], pointsensor_channel='LIDAR_TOP')
+    nusc.render_sample_data(
+        my_sample['data']['LIDAR_TOP'], nsweeps=5, underlay_map=True)
+    nusc.render_sample_data(
+        my_sample['data']['RADAR_FRONT_RIGHT'], nsweeps=5, underlay_map=True)
     plt.show()
 
     '''
@@ -356,7 +378,7 @@ def demo():
     pc_velo = dataset.get_lidar(data_idx)[:, 0:3]  # (115384, 3)
     calib = dataset.get_calibration(data_idx)  # utils.Calibration(calib_filename)
     '''
-    ## Draw lidar in rect camera coord
+    # Draw lidar in rect camera coord
     # print(' -------- LiDAR points in rect camera coordination --------')
     # pc_rect = calib.project_velo_to_rect(pc_velo)
     # fig = draw_lidar_simple(pc_rect)
@@ -364,19 +386,19 @@ def demo():
     # Draw 2d and 3d boxes on image
     #print(' -------- 2D/3D bounding boxes in images --------')
     #show_image_with_boxes(img, objects, calib)
-    #raw_input()
+    # raw_input()
 
     # Show all LiDAR points. Draw 3d box in LiDAR point cloud
     #print(' -------- LiDAR points and 3D boxes in velodyne coordinate --------')
     # show_lidar_with_boxes(pc_velo, objects, calib)
     # raw_input()
     #show_lidar_with_boxes(pc_velo, objects, calib, True, img_width, img_height)
-    #raw_input()
+    # raw_input()
 
     # Visualize LiDAR points on images
     #print(' -------- LiDAR points projected to image plane --------')
     #show_lidar_on_image(pc_velo, img, calib, img_width, img_height)
-    #raw_input()
+    # raw_input()
 
     # Show LiDAR points that are in the 3d box
     #print(' -------- LiDAR points in a 3D bounding box --------')
@@ -428,6 +450,7 @@ def demo():
     raw_input()
     '''
 
+
 def random_shift_box2d(box2d, shift_ratio=0.1):
     ''' Randomly shift box center, randomly scale width and height 
     '''
@@ -463,7 +486,8 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
     Output:
         None (will write a .pickle file to the disk)
     '''
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    dataset = kitti_object(os.path.join(
+        ROOT_DIR, '/scratch/jain.van/ACV/dataset/KITTI/object'), split)
     data_idx_list = [int(line.rstrip()) for line in open(idx_filename)]
 
     id_list = []  # int number
@@ -493,9 +517,10 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
                                                                  calib, 0, 0, img_width, img_height, True)
 
         for obj_idx in range(len(objects)):
-            if objects[obj_idx].type not in type_whitelist: continue
+            if objects[obj_idx].type not in type_whitelist:
+                continue
 
-            # 2D BOX: Get pts rect backprojected 
+            # 2D BOX: Get pts rect backprojected
             box2d = objects[obj_idx].box2d
             for _ in range(augmentX):
                 # Augment data by box2d perturbation
@@ -512,7 +537,8 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
                 box_fov_inds = box_fov_inds & img_fov_inds
                 pc_in_box_fov = pc_rect[box_fov_inds, :]  # (1607, 4)
                 # Get frustum angle (according to center pixel in 2D BOX)
-                box2d_center = np.array([(xmin + xmax) / 2.0, (ymin + ymax) / 2.0])
+                box2d_center = np.array(
+                    [(xmin + xmax) / 2.0, (ymin + ymax) / 2.0])
                 uvdepth = np.zeros((1, 3))
                 uvdepth[0, 0:2] = box2d_center
                 uvdepth[0, 2] = 20  # some random depth
@@ -521,14 +547,17 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
                                                 box2d_center_rect[0, 0])
                 # 3D BOX: Get pts velo in 3d box
                 obj = objects[obj_idx]
-                box3d_pts_2d, box3d_pts_3d = utils.compute_box_3d(obj, calib.P)  # (8, 2)(8, 3)
-                _, inds = extract_pc_in_box3d(pc_in_box_fov, box3d_pts_3d)  # (375, 4)(1607,)
+                box3d_pts_2d, box3d_pts_3d = utils.compute_box_3d(
+                    obj, calib.P)  # (8, 2)(8, 3)
+                _, inds = extract_pc_in_box3d(
+                    pc_in_box_fov, box3d_pts_3d)  # (375, 4)(1607,)
                 label = np.zeros((pc_in_box_fov.shape[0]))  # (1607,)
                 label[inds] = 1
                 # Get 3D BOX heading
                 heading_angle = obj.ry  # 0.01
                 # Get 3D BOX size
-                box3d_size = np.array([obj.l, obj.w, obj.h])  # array([1.2 , 0.48, 1.89])
+                # array([1.2 , 0.48, 1.89])
+                box3d_size = np.array([obj.l, obj.w, obj.h])
 
                 # Reject too far away object or object without points
                 if ymax - ymin < 25 or np.sum(label) == 0:
@@ -580,7 +609,8 @@ def extract_frustum_data(idx_filename, split, output_filename, viz=False,
 
 def get_box3d_dim_statistics(idx_filename):
     ''' Collect and dump 3D bounding box statistics '''
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'))
+    dataset = kitti_object(os.path.join(
+        ROOT_DIR, '/scratch/jain.van/ACV/dataset/KITTI/object'))
     dimension_list = []
     type_list = []
     ry_list = []
@@ -591,7 +621,8 @@ def get_box3d_dim_statistics(idx_filename):
         objects = dataset.get_label_objects(data_idx)
         for obj_idx in range(len(objects)):
             obj = objects[obj_idx]
-            if obj.type == 'DontCare': continue
+            if obj.type == 'DontCare':
+                continue
             dimension_list.append(np.array([obj.l, obj.w, obj.h]))
             type_list.append(obj.type)
             ry_list.append(obj.ry)
@@ -638,7 +669,8 @@ def extract_frustum_data_rgb_detection(det_filename, split, output_filename,
     Output:
         None (will write a .pickle file to the disk)
     '''
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    dataset = kitti_object(os.path.join(
+        ROOT_DIR, '/scratch/jain.van/ACV/dataset/KITTI/object'), split)
     det_id_list, det_type_list, det_box2d_list, det_prob_list = \
         read_det_file(det_filename)
     cache_id = -1
@@ -653,7 +685,7 @@ def extract_frustum_data_rgb_detection(det_filename, split, output_filename,
 
     for det_idx in range(len(det_id_list)):
         data_idx = det_id_list[det_idx]
-        print('det idx: %d/%d, data idx: %d' % \
+        print('det idx: %d/%d, data idx: %d' %
               (det_idx, len(det_id_list), data_idx))
         if cache_id != data_idx:
             calib = dataset.get_calibration(data_idx)  # 3 by 4 matrix
@@ -663,16 +695,17 @@ def extract_frustum_data_rgb_detection(det_filename, split, output_filename,
             pc_rect[:, 3] = pc_velo[:, 3]
             img = dataset.get_image(data_idx)
             img_height, img_width, img_channel = img.shape
-            _, pc_image_coord, img_fov_inds = get_lidar_in_image_fov( \
+            _, pc_image_coord, img_fov_inds = get_lidar_in_image_fov(
                 pc_velo[:, 0:3], calib, 0, 0, img_width, img_height, True)
             cache = [calib, pc_rect, pc_image_coord, img_fov_inds]
             cache_id = data_idx
         else:
             calib, pc_rect, pc_image_coord, img_fov_inds = cache
 
-        if det_type_list[det_idx] not in type_whitelist: continue
+        if det_type_list[det_idx] not in type_whitelist:
+            continue
 
-        # 2D BOX: Get pts rect backprojected 
+        # 2D BOX: Get pts rect backprojected
         xmin, ymin, xmax, ymax = det_box2d_list[det_idx]
         box_fov_inds = (pc_image_coord[:, 0] < xmax) & \
                        (pc_image_coord[:, 0] >= xmin) & \
@@ -739,7 +772,8 @@ def write_2d_rgb_detection(det_filename, split, result_dir):
     Usage:
         write_2d_rgb_detection("val_det.txt", "training", "results")
     '''
-    dataset = kitti_object(os.path.join(ROOT_DIR, 'dataset/KITTI/object'), split)
+    dataset = kitti_object(os.path.join(
+        ROOT_DIR, '/scratch/jain.van/ACV/dataset/KITTI/object'), split)
     det_id_list, det_type_list, det_box2d_list, det_prob_list = \
         read_det_file(det_filename)
     # map from idx to list of strings, each string is a line without \n
@@ -752,11 +786,14 @@ def write_2d_rgb_detection(det_filename, split, result_dir):
         output_str = typename + " -1 -1 -10 "
         output_str += "%f %f %f %f " % (box2d[0], box2d[1], box2d[2], box2d[3])
         output_str += "-1 -1 -1 -1000 -1000 -1000 -10 %f" % (prob)
-        if idx not in results: results[idx] = []
+        if idx not in results:
+            results[idx] = []
         results[idx].append(output_str)
-    if not os.path.exists(result_dir): os.mkdir(result_dir)
+    if not os.path.exists(result_dir):
+        os.mkdir(result_dir)
     output_dir = os.path.join(result_dir, 'data')
-    if not os.path.exists(output_dir): os.mkdir(output_dir)
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
     for idx in results:
         pred_filename = os.path.join(output_dir, '%06d.txt' % (idx))
         fout = open(pred_filename, 'w')
@@ -771,10 +808,12 @@ if __name__ == '__main__':
     parser.add_argument('--demo', action='store_true', help='Run demo.')
     parser.add_argument('--gen_train', action='store_true',
                         help='Generate train split frustum data with perturbed GT 2D boxes')
-    parser.add_argument('--gen_val', action='store_true', help='Generate val split frustum data with GT 2D boxes')
+    parser.add_argument('--gen_val', action='store_true',
+                        help='Generate val split frustum data with GT 2D boxes')
     parser.add_argument('--gen_val_rgb_detection', action='store_true',
                         help='Generate val split frustum data with RGB detection 2D boxes')
-    parser.add_argument('--car_only', action='store_true', help='Only generate cars; otherwise cars, peds and cycs')
+    parser.add_argument('--car_only', action='store_true',
+                        help='Only generate cars; otherwise cars, peds and cycs')
     args = parser.parse_args()
 
     if args.demo:
@@ -799,7 +838,7 @@ if __name__ == '__main__':
         output_prefix = 'frustum_carpedcyc_'
 
     if args.gen_train:
-        extract_frustum_data( \
+        extract_frustum_data(
             os.path.join(BASE_DIR, 'image_sets/train.txt'),
             'training',
             os.path.join(BASE_DIR, output_prefix + 'train.pickle'),
@@ -807,7 +846,7 @@ if __name__ == '__main__':
             type_whitelist=type_whitelist)
 
     if args.gen_val:
-        extract_frustum_data( \
+        extract_frustum_data(
             os.path.join(BASE_DIR, 'image_sets/val.txt'),
             'training',
             os.path.join(BASE_DIR, output_prefix + 'val.pickle'),
@@ -815,9 +854,9 @@ if __name__ == '__main__':
             type_whitelist=type_whitelist)
 
     if args.gen_val_rgb_detection:
-        extract_frustum_data_rgb_detection( \
+        extract_frustum_data_rgb_detection(
             os.path.join(BASE_DIR, 'rgb_detections/rgb_detection_val.txt'),
             'training',
             os.path.join(BASE_DIR, output_prefix + 'val_rgb_detection.pickle'),
             viz=False,
-            type_whitelist=type_whitelist) 
+            type_whitelist=type_whitelist)

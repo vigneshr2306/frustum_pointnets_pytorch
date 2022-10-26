@@ -1,3 +1,18 @@
+import subprocess
+from ops.pybind11.rbbox_iou import cube_nms_np
+from utils import import_from_file
+from configs.config import assert_and_infer_cfg
+from configs.config import merge_cfg_from_list
+from configs.config import merge_cfg_from_file
+from configs.config import cfg
+import torch.nn.functional as F
+import time
+from model_util import FrustumPointNetLoss
+import ipdb
+from tqdm import tqdm
+from torch.utils.data import DataLoader
+import provider
+from model_util import NUM_HEADING_BIN, NUM_SIZE_CLUSTER
 import os
 import sys
 import argparse
@@ -9,26 +24,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.join(ROOT_DIR, 'models'))
-from model_util import NUM_HEADING_BIN, NUM_SIZE_CLUSTER
-import provider
-from torch.utils.data import DataLoader
-from tqdm import tqdm
-import ipdb
-from model_util import FrustumPointNetLoss
-import time
-import torch.nn.functional as F
-from configs.config import cfg
-from configs.config import merge_cfg_from_file
-from configs.config import merge_cfg_from_list
-from configs.config import assert_and_infer_cfg
-from utils import import_from_file
-from ops.pybind11.rbbox_iou import cube_nms_np
-import subprocess
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--cfg', default='cfgs/fpointnet/fpointnet_v1_kitti.yaml', help='Config file for training (and optionally testing)')
-parser.add_argument('opts',help='See configs/config.py for all options',default=None,nargs=argparse.REMAINDER)
-parser.add_argument('--debug', default=False, action='store_true',help='debug mode')
+parser.add_argument('--cfg', default='cfgs/fpointnet/fpointnet_v1_kitti.yaml',
+                    help='Config file for training (and optionally testing)')
+parser.add_argument('opts', help='See configs/config.py for all options',
+                    default=None, nargs=argparse.REMAINDER)
+parser.add_argument('--debug', default=False,
+                    action='store_true', help='debug mode')
 args = parser.parse_args()
 if args.cfg is not None:
     merge_cfg_from_file(args.cfg)
@@ -50,7 +53,7 @@ NUM_WORKERS = cfg.NUM_WORKERS
 FROM_RGB_DET = cfg.FROM_RGB_DET
 SAVE_SUB_DIR = cfg.SAVE_SUB_DIR
 SAVE_DIR = os.path.join(OUTPUT_DIR, SAVE_SUB_DIR)
-## TRAIN
+# TRAIN
 TRAIN_FILE = cfg.TRAIN.FILE
 BATCH_SIZE = cfg.TRAIN.BATCH_SIZE
 START_EPOCH = cfg.TRAIN.START_EPOCH
@@ -64,16 +67,16 @@ MOMENTUM = cfg.TRAIN.MOMENTUM
 WEIGHT_DECAY = cfg.TRAIN.WEIGHT_DECAY
 NUM_POINT = cfg.TRAIN.NUM_POINT
 TRAIN_SETS = cfg.TRAIN.TRAIN_SETS
-## TEST
+# TEST
 TEST_WEIGHTS = cfg.TEST.WEIGHTS
 TEST_FILE = cfg.TEST.FILE
 TEST_BATCH_SIZE = cfg.TEST.BATCH_SIZE
 TEST_NUM_POINT = cfg.TEST.NUM_POINT
 TEST_SETS = cfg.TEST.TEST_SETS
-## MODEL
+# MODEL
 MODEL_FILE = cfg.MODEL.FILE
 NUM_CLASSES = cfg.MODEL.NUM_CLASSES
-## DATA
+# DATA
 DATA_FILE = cfg.DATA.FILE
 DATASET = cfg.DATA.DATASET
 DATAROOT = cfg.DATA.DATA_ROOT
@@ -90,15 +93,18 @@ else:
 
 MODEL = import_from_file(MODEL_FILE)  # import network module
 LOG_DIR = OUTPUT_DIR + '/' + NAME
-if not os.path.exists(LOG_DIR): os.mkdir(LOG_DIR)
+if not os.path.exists(LOG_DIR):
+    os.mkdir(LOG_DIR)
 os.system('cp %s %s' % (os.path.join(BASE_DIR, 'test.py'), LOG_DIR))
 LOG_FOUT = open(os.path.join(LOG_DIR, 'log_test.txt'), 'w')
 LOG_FOUT.write(str(args) + '\n')
+
 
 def log_string(out_str):
     LOG_FOUT.write(out_str+'\n')
     LOG_FOUT.flush()
     print(out_str)
+
 
 def softmax(x):
     ''' Numpy function for softmax'''
@@ -106,6 +112,7 @@ def softmax(x):
     probs = np.exp(x - np.max(x, axis=len(shape)-1, keepdims=True))
     probs /= np.sum(probs, axis=len(shape)-1, keepdims=True)
     return probs
+
 
 def rotate_pc_along_y(pc, rot_angle):
     '''
@@ -123,11 +130,13 @@ def rotate_pc_along_y(pc, rot_angle):
     pc[:, [0, 2]] = np.dot(pc[:, [0, 2]], np.transpose(rotmat))
     return pc
 
+
 def from_prediction_to_label_format(center, angle, size, rot_angle, ref_center=None):
     ''' Convert predicted box parameters to label format. '''
     l, w, h = size
     ry = angle + rot_angle
-    tx, ty, tz = rotate_pc_along_y(np.expand_dims(center, 0), -rot_angle).squeeze()
+    tx, ty, tz = rotate_pc_along_y(
+        np.expand_dims(center, 0), -rot_angle).squeeze()
 
     if ref_center is not None:
         tx = tx + ref_center[0]
@@ -137,6 +146,7 @@ def from_prediction_to_label_format(center, angle, size, rot_angle, ref_center=N
     ty += h / 2.0
     return h, w, l, tx, ty, tz, ry
 
+
 def fill_files(output_dir, to_fill_filename_list):
     ''' Create empty files if not exist for the filelist. '''
     for filename in to_fill_filename_list:
@@ -145,19 +155,23 @@ def fill_files(output_dir, to_fill_filename_list):
             fout = open(filepath, 'w')
             fout.close()
 
+
 def write_detection_results(output_dir, det_results):
 
-    results = {}  # map from idx to list of strings, each string is a line (without \n)
+    # map from idx to list of strings, each string is a line (without \n)
+    results = {}
     for idx in det_results:
         for class_type in det_results[idx]:
             dets = det_results[idx][class_type]
             for i in range(len(dets)):
                 output_str = class_type + " -1 -1 -10 "
                 box2d = dets[i][:4]
-                output_str += "%f %f %f %f " % (box2d[0], box2d[1], box2d[2], box2d[3])
+                output_str += "%f %f %f %f " % (box2d[0],
+                                                box2d[1], box2d[2], box2d[3])
                 tx, ty, tz, h, w, l, ry = dets[i][4:-1]
                 score = dets[i][-1]
-                output_str += "%f %f %f %f %f %f %f %f" % (h, w, l, tx, ty, tz, ry, score)
+                output_str += "%f %f %f %f %f %f %f %f" % (
+                    h, w, l, tx, ty, tz, ry, score)
                 if idx not in results:
                     results[idx] = []
                 results[idx].append(output_str)
@@ -206,6 +220,7 @@ def write_detection_results_nms(output_dir, det_results, threshold=cfg.TEST.THRE
 
     write_detection_results(output_dir, nms_results)
 
+
 def test_one_epoch(model, loader):
     ''' Test frustum pointnets with GT 2D boxes.
     Write test results to KITTI format label files.
@@ -236,7 +251,7 @@ def test_one_epoch(model, loader):
     min_info = np.zeros(3)
     mean_info = np.zeros(3)
 
-    for i, data_dicts in tqdm(enumerate(loader), \
+    for i, data_dicts in tqdm(enumerate(loader),
                               total=len(loader), smoothing=0.9):
         # for debug
         if FLAGS.debug == True:
@@ -244,10 +259,10 @@ def test_one_epoch(model, loader):
                 break
 
         # 1. Load data
-        data_dicts_var = {key: value.squeeze().cuda() for key, value in data_dicts.items()}
+        data_dicts_var = {key: value.squeeze().cuda()
+                          for key, value in data_dicts.items()}
         ipdb.set_trace()
         test_n_samples += data_dicts['point_cloud'].shape[0]
-
 
         # 2. Eval one batch
         model = model.eval()
@@ -272,8 +287,7 @@ def test_one_epoch(model, loader):
             heading_preds = heading_preds.data.cpu().numpy()
             size_preds = size_preds.data.cpu().numpy()
 
-
-        #ipdb.set_trace()
+        # ipdb.set_trace()
         # batch_scores = heading_prob
         for j in range(batch_output.shape[0]):
             ps_list.append(batch_data[j, ...])
@@ -286,14 +300,14 @@ def test_one_epoch(model, loader):
             size_res_list.append(batch_sres_pred[j, :])
             rot_angle_list.append(batch_rot_angle[j])
             score_list.append(batch_scores[j])
-            pos_cnt += np.sum(batch_label[j,:].cpu().detach().numpy())
+            pos_cnt += np.sum(batch_label[j, :].cpu().detach().numpy())
             pos_pred_cnt += np.sum(batch_output[j, :])
-            pts_np = batch_data[j,:3,:].cpu().detach().numpy()#(3,1024)
-            max_xyz = np.max(pts_np,axis=1)
-            max_info= np.maximum(max_info,max_xyz)
-            min_xyz = np.min(pts_np,axis=1)
-            min_info= np.minimum(min_info,min_xyz)
-            mean_info += np.sum(pts_np,axis=1)
+            pts_np = batch_data[j, :3, :].cpu().detach().numpy()  # (3,1024)
+            max_xyz = np.max(pts_np, axis=1)
+            max_info = np.maximum(max_info, max_xyz)
+            min_xyz = np.min(pts_np, axis=1)
+            min_info = np.minimum(min_info, min_xyz)
+            mean_info += np.sum(pts_np, axis=1)
     '''
     return np.argmax(logits, 2), centers, heading_cls, heading_res, \
         size_cls, size_res, scores
@@ -321,15 +335,15 @@ def test_one_epoch(model, loader):
     # Write detection results for KITTI evaluation
     print('Number of point clouds: %d' % (len(ps_list)))
     write_detection_results(result_dir, TEST_DATASET.id_list,
-        TEST_DATASET.type_list, TEST_DATASET.box2d_list,
-        center_list, heading_cls_list, heading_res_list,
-        size_cls_list, size_res_list, rot_angle_list, score_list)
+                            TEST_DATASET.type_list, TEST_DATASET.box2d_list,
+                            center_list, heading_cls_list, heading_res_list,
+                            size_cls_list, size_res_list, rot_angle_list, score_list)
     # Make sure for each frame (no matter if we have measurment for that frame),
     # there is a TXT file
     output_dir = os.path.join(result_dir, 'data')
     if FLAGS.idx_path is not None:
-        to_fill_filename_list = [line.rstrip()+'.txt' \
-            for line in open(FLAGS.idx_path)]
+        to_fill_filename_list = [line.rstrip()+'.txt'
+                                 for line in open(FLAGS.idx_path)]
         fill_files(output_dir, to_fill_filename_list)
 
     all_cnt = FLAGS.num_point * len(ps_list)
@@ -337,9 +351,10 @@ def test_one_epoch(model, loader):
     print('Average pos prediction ratio: %f' % (pos_pred_cnt / float(all_cnt)))
     print('Average npoints: %f' % (float(all_cnt) / len(ps_list)))
     mean_info = mean_info / len(ps_list) / FLAGS.num_point
-    print('Mean points: x%f y%f z%f' % (mean_info[0],mean_info[1],mean_info[2]))
-    print('Max points: x%f y%f z%f' % (max_info[0],max_info[1],max_info[2]))
-    print('Min points: x%f y%f z%f' % (min_info[0],min_info[1],min_info[2]))
+    print('Mean points: x%f y%f z%f' %
+          (mean_info[0], mean_info[1], mean_info[2]))
+    print('Max points: x%f y%f z%f' % (max_info[0], max_info[1], max_info[2]))
+    print('Min points: x%f y%f z%f' % (min_info[0], min_info[1], min_info[2]))
     '''
     2020.2.9
     
@@ -428,36 +443,40 @@ def test_one_epoch(model, loader):
     '''
     if FLAGS.return_all_loss:
         return test_total_loss / test_n_samples, \
-               test_iou2d / test_n_samples, \
-               test_iou3d / test_n_samples, \
-               test_acc / test_n_samples, \
-               test_iou3d_acc / test_n_samples,\
-               test_mask_loss / test_n_samples, \
-               test_center_loss / test_n_samples, \
-               test_heading_class_loss / test_n_samples, \
-               test_size_class_loss / test_n_samples, \
-               test_heading_residuals_normalized_loss / test_n_samples, \
-               test_size_residuals_normalized_loss / test_n_samples, \
-               test_stage1_center_loss / test_n_samples, \
-               test_corners_loss / test_n_samples
+            test_iou2d / test_n_samples, \
+            test_iou3d / test_n_samples, \
+            test_acc / test_n_samples, \
+            test_iou3d_acc / test_n_samples,\
+            test_mask_loss / test_n_samples, \
+            test_center_loss / test_n_samples, \
+            test_heading_class_loss / test_n_samples, \
+            test_size_class_loss / test_n_samples, \
+            test_heading_residuals_normalized_loss / test_n_samples, \
+            test_size_residuals_normalized_loss / test_n_samples, \
+            test_stage1_center_loss / test_n_samples, \
+            test_corners_loss / test_n_samples
     else:
         return test_total_loss/test_n_samples,  \
-               test_iou2d/test_n_samples, \
-               test_iou3d/test_n_samples, \
-               test_acc/test_n_samples, \
-               test_iou3d_acc/test_n_samples
+            test_iou2d/test_n_samples, \
+            test_iou3d/test_n_samples, \
+            test_acc/test_n_samples, \
+            test_iou3d_acc/test_n_samples
+
 
 def evaluate_py_wrapper(output_dir, async_eval=False):
     # official evaluation
-    gt_dir = 'dataset/KITTI/object/training/label_2/'
-    command_line = './train/kitti_eval/evaluate_object_3d_offline %s %s' % (gt_dir, output_dir)
-    command_line += ' 2>&1 | tee -a  %s/log_test.txt' % (os.path.join(output_dir))
+    gt_dir = '/scratch/jain.van/ACV/dataset/KITTI/object/training/label_2/'
+    command_line = './train/kitti_eval/evaluate_object_3d_offline %s %s' % (
+        gt_dir, output_dir)
+    command_line += ' 2>&1 | tee -a  %s/log_test.txt' % (
+        os.path.join(output_dir))
     print(command_line)
     if async_eval:
         subprocess.Popen(command_line, shell=True)
     else:
         if os.system(command_line) != 0:
             assert False
+
 
 def test(model, test_dataset, test_loader, output_filename, result_dir=None):
 
@@ -493,7 +512,8 @@ def test(model, test_dataset, test_loader, output_filename, result_dir=None):
         if 'box3d_center' in data_dicts:
             data_dicts.pop('box3d_center')
 
-        data_dicts_var = {key: value.cuda() for key, value in data_dicts.items()}
+        data_dicts_var = {key: value.cuda()
+                          for key, value in data_dicts.items()}
 
         torch.cuda.synchronize()
         tic = time.time()
@@ -560,7 +580,8 @@ def test(model, test_dataset, test_loader, output_filename, result_dir=None):
 
     log_string('Average time:')
     log_string(('avg_per_batch:%0.3f' % (test_time_total / num_batches)))
-    log_string(('avg_per_object:%0.3f' % (test_time_total / num_batches / load_batch_size)))
+    log_string(('avg_per_object:%0.3f' %
+               (test_time_total / num_batches / load_batch_size)))
     log_string(('avg_per_image:%.3f' % (test_time_total / num_images)))
 
     # Write detection results for KITTI evaluation
@@ -579,7 +600,8 @@ def test(model, test_dataset, test_loader, output_filename, result_dir=None):
         logger.info('results file save in  {}'.format(result_dir))
         os.system('cd %s && zip -q -r ../results.zip *' % (result_dir))
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
 
     # Load Frustum Datasets.
     if 'frustum_pointnet' in MODEL_FILE:
@@ -603,11 +625,13 @@ if __name__=='__main__':
     if 'frustum_pointnets_v1' in MODEL_FILE:
         from frustum_pointnets_v1 import FrustumPointNetv1
 
-        model = FrustumPointNetv1(n_classes=NUM_CLASSES, n_channel=NUM_CHANNEL).cuda()
+        model = FrustumPointNetv1(
+            n_classes=NUM_CLASSES, n_channel=NUM_CHANNEL).cuda()
     elif 'frustum_convnet_v1' in MODEL_FILE:
         from frustum_convnet_v1 import FrustumConvNetv1
 
-        model = FrustumConvNetv1(n_classes=NUM_CLASSES, n_channel=NUM_CHANNEL).cuda()
+        model = FrustumConvNetv1(
+            n_classes=NUM_CLASSES, n_channel=NUM_CHANNEL).cuda()
 
     # Pre-trained Model
     if not os.path.isfile(TEST_WEIGHTS):
@@ -628,5 +652,3 @@ if __name__=='__main__':
         os.makedirs(result_folder)
 
     test(model, TEST_DATASET, test_dataloader, save_file_name, result_folder)
-
-
