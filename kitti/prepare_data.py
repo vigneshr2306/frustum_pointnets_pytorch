@@ -1,6 +1,6 @@
 ''' Prepare KITTI data for 3D object detection.
-
-Author: Charles R. Qi
+i
+Aiuthor: Charles R. Qi
 Date: September 2017
 '''
 from __future__ import print_function

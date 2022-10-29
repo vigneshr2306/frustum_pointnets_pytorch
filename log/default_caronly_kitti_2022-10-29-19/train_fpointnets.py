@@ -53,7 +53,7 @@ parser.add_argument('--return_all_loss', default=False,
                     action='store_true', help='only return total loss default')
 parser.add_argument('--debug', default=False,
                     action='store_true', help='debug mode')
-parser.add_argument('--objtype', type=str, default='carpedcyc',
+parser.add_argument('--objtype', type=str, default='caronly',
                     help='caronly or carpedcyc')
 parser.add_argument('--sensor', type=str, default='CAM_FRONT',
                     help='only consider CAM_FRONT')
