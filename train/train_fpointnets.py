@@ -1,4 +1,5 @@
 import provider_fpointnet as provider
+from models.frustum_pointnets_v1_old_1 import FrustumPointNetv1
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 from torch.utils.data import DataLoader
@@ -20,7 +21,7 @@ sys.path.append(os.path.join(ROOT_DIR, 'models'))
 
 parser = argparse.ArgumentParser()
 ###parser.add_argument('--gpu', type=int, default=0, help='GPU to use [default: GPU 0]')
-parser.add_argument('--model', default='frustum_pointnets_v1_old_1',
+parser.add_argument('--model', default='models/frustum_pointnets_v1_old_1',
                     help='Model name [default: frustum_pointnets_v1]')
 parser.add_argument('--log_dir', default='log', help='Log dir [default: log]')
 parser.add_argument('--num_point', type=int, default=1024,
@@ -298,8 +299,7 @@ def train():
     def blue(x): return '\033[94m' + x + '\033[0m'
 
     # set model
-    if FLAGS.model == 'frustum_pointnets_v1_old_1':
-        from frustum_pointnets_v1_old_1 import FrustumPointNetv1
+    if FLAGS.model == 'models/frustum_pointnets_v1_old_1':
         FrustumPointNet = FrustumPointNetv1(n_classes=n_classes).cuda()
 
     # load pre-trained model
