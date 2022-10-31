@@ -3,6 +3,32 @@ Author: Charles R. Qi
 Date: September 2017
 '''
 from __future__ import print_function
+import ipdb
+import numpy as np
+# from .model_util_old import NUM_HEADING_BIN, NUM_SIZE_CLUSTER
+
+# from .model_util_old import g_type_mean_size
+# from .model_util_old import g_type2class, g_class2type, g_type2onehotclass
+NUM_HEADING_BIN = 12
+NUM_SIZE_CLUSTER = 8 # one cluster for each type
+NUM_OBJECT_POINT = 512
+g_type2class={'Car':0, 'Van':1, 'Truck':2, 'Pedestrian':3,
+              'Person_sitting':4, 'Cyclist':5, 'Tram':6, 'Misc':7}
+g_class2type = {g_type2class[t]:t for t in g_type2class}
+g_type2onehotclass = {'Car': 0, 'Pedestrian': 1, 'Cyclist': 2}
+g_type_mean_size = {'Car': np.array([3.88311640418,1.62856739989,1.52563191462]),
+                    'Van': np.array([5.06763659,1.9007158,2.20532825]),
+                    'Truck': np.array([10.13586957,2.58549199,3.2520595]),
+                    'Pedestrian': np.array([0.84422524,0.66068622,1.76255119]),
+                    'Person_sitting': np.array([0.80057803,0.5983815,1.27450867]),
+                    'Cyclist': np.array([1.76282397,0.59706367,1.73698127]),
+                    'Tram': np.array([16.17150617,2.53246914,3.53079012]),
+                    'Misc': np.array([3.64300781,1.54298177,1.92320313])}
+g_mean_size_arr = np.zeros((NUM_SIZE_CLUSTER, 3)) # size clustrs
+# import model_util_old
+# import .models.model_util_old
+# import .models.model_util_old
+from box_util import box3d_iou
 
 import _pickle as pickle
 import sys
@@ -13,11 +39,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.append(BASE_DIR)
 sys.path.append(os.path.join(ROOT_DIR, 'models'))
-from box_util import box3d_iou
-from model_util_old import g_type2class, g_class2type, g_type2onehotclass
-from model_util_old import g_type_mean_size
-from model_util_old import NUM_HEADING_BIN, NUM_SIZE_CLUSTER
-import ipdb
 
 try:
     raw_input  # Python 2
@@ -58,7 +79,7 @@ def angle2class(angle, num_class):
     shifted_angle = (angle + angle_per_class / 2) % (2 * np.pi)
     class_id = int(shifted_angle / angle_per_class)
     residual_angle = shifted_angle - \
-                     (class_id * angle_per_class + angle_per_class / 2)
+        (class_id * angle_per_class + angle_per_class / 2)
     return class_id, residual_angle
 
 
@@ -142,15 +163,15 @@ class FrustumDataset(object):
         else:
             with open(overwritten_data_path, 'rb') as fp:
                 self.id_list = pickle.load(fp)
-                self.box2d_list = pickle.load(fp)
-                self.box3d_list = pickle.load(fp)
-                self.input_list = pickle.load(fp)
-                self.label_list = pickle.load(fp)
-                self.type_list = pickle.load(fp)
-                self.heading_list = pickle.load(fp)
-                self.size_list = pickle.load(fp)
+                self.box2d_list = pickle.load(fp, encoding="latin1")
+                self.box3d_list = pickle.load(fp, encoding="latin1")
+                self.input_list = pickle.load(fp, encoding="latin1")
+                self.label_list = pickle.load(fp, encoding="latin1")
+                self.type_list = pickle.load(fp, encoding="latin1")
+                self.heading_list = pickle.load(fp, encoding="latin1")
+                self.size_list = pickle.load(fp, encoding="latin1")
                 # frustum_angle is clockwise angle from positive x-axis
-                self.frustum_angle_list = pickle.load(fp)
+                self.frustum_angle_list = pickle.load(fp, encoding="latin1")
 
     def __len__(self):
         return len(self.input_list)
@@ -170,13 +191,15 @@ class FrustumDataset(object):
 
         # Get point cloud
         if self.rotate_to_center:  # True
-            point_set = self.get_center_view_point_set(index)  # (n,4) #pts after Frustum rotation
+            point_set = self.get_center_view_point_set(
+                index)  # (n,4) #pts after Frustum rotation
         else:
             point_set = self.input_list[index]
 
         # ipdb.set_trace()
         # Resample
-        choice = np.random.choice(point_set.shape[0], self.npoints, replace=True)
+        choice = np.random.choice(
+            point_set.shape[0], self.npoints, replace=True)
         point_set = point_set[choice, :]
 
         if self.from_rgb_detection:
@@ -191,13 +214,15 @@ class FrustumDataset(object):
 
         # Get center point of 3D box
         if self.rotate_to_center:  # True
-            box3d_center = self.get_center_view_box3d_center(index)  # array([ 0.07968819,  0.39      , 46.06915834])
+            # array([ 0.07968819,  0.39      , 46.06915834])
+            box3d_center = self.get_center_view_box3d_center(index)
         else:
             box3d_center = self.get_box3d_center(index)
 
         # Heading
         if self.rotate_to_center:  # True
-            heading_angle = self.heading_list[index] - rot_angle  # -1.6480684951683866 #alpha
+            # -1.6480684951683866 #alpha
+            heading_angle = self.heading_list[index] - rot_angle
         else:
             heading_angle = self.heading_list[index]  # rotation_y
 
@@ -214,7 +239,8 @@ class FrustumDataset(object):
                 heading_angle = np.pi - heading_angle
         if self.random_shift:
             dist = np.sqrt(np.sum(box3d_center[0] ** 2 + box3d_center[1] ** 2))
-            shift = np.clip(np.random.randn() * dist * 0.05, dist * 0.8, dist * 1.2)
+            shift = np.clip(np.random.randn() * dist *
+                            0.05, dist * 0.8, dist * 1.2)
             point_set[:, 2] += shift
             box3d_center[2] += shift
 
@@ -223,10 +249,10 @@ class FrustumDataset(object):
 
         if self.one_hot:
             return point_set, seg, box3d_center, angle_class, angle_residual, \
-                   size_class, size_residual, rot_angle, one_hot_vec
+                size_class, size_residual, rot_angle, one_hot_vec
         else:
             return point_set, seg, box3d_center, angle_class, angle_residual, \
-                   size_class, size_residual, rot_angle
+                size_class, size_residual, rot_angle
 
     def get_center_view_rot_angle(self, index):
         ''' Get the frustum rotation angle, it isshifted by pi/2 so that it
@@ -235,22 +261,22 @@ class FrustumDataset(object):
 
     def get_box3d_center(self, index):
         ''' Get the center (XYZ) of 3D bounding box. '''
-        box3d_center = (self.box3d_list[index][0, :] + \
+        box3d_center = (self.box3d_list[index][0, :] +
                         self.box3d_list[index][6, :]) / 2.0
         return box3d_center
 
     def get_center_view_box3d_center(self, index):
         ''' Frustum rotation of 3D bounding box center. '''
-        box3d_center = (self.box3d_list[index][0, :] + \
+        box3d_center = (self.box3d_list[index][0, :] +
                         self.box3d_list[index][6, :]) / 2.0
-        return rotate_pc_along_y(np.expand_dims(box3d_center, 0), \
+        return rotate_pc_along_y(np.expand_dims(box3d_center, 0),
                                  self.get_center_view_rot_angle(index)).squeeze()
 
     def get_center_view_box3d(self, index):
         ''' Frustum rotation of 3D bounding box corners. '''
         box3d = self.box3d_list[index]
         box3d_center_view = np.copy(box3d)
-        return rotate_pc_along_y(box3d_center_view, \
+        return rotate_pc_along_y(box3d_center_view,
                                  self.get_center_view_rot_angle(index))
 
     def get_center_view_point_set(self, index):
@@ -260,7 +286,7 @@ class FrustumDataset(object):
         '''
         # Use np.copy to avoid corrupting original data
         point_set = np.copy(self.input_list[index])
-        return rotate_pc_along_y(point_set, \
+        return rotate_pc_along_y(point_set,
                                  self.get_center_view_rot_angle(index))
 
 
@@ -287,13 +313,13 @@ def get_3d_box(box_size, heading_angle, center):
 
     R = roty(heading_angle)
     l, w, h = box_size
-    x_corners = [l / 2, l / 2, -l / 2, -l / 2, l / 2, l / 2, -l / 2, -l / 2];
-    y_corners = [h / 2, h / 2, h / 2, h / 2, -h / 2, -h / 2, -h / 2, -h / 2];
-    z_corners = [w / 2, -w / 2, -w / 2, w / 2, w / 2, -w / 2, -w / 2, w / 2];
+    x_corners = [l / 2, l / 2, -l / 2, -l / 2, l / 2, l / 2, -l / 2, -l / 2]
+    y_corners = [h / 2, h / 2, h / 2, h / 2, -h / 2, -h / 2, -h / 2, -h / 2]
+    z_corners = [w / 2, -w / 2, -w / 2, w / 2, w / 2, -w / 2, -w / 2, w / 2]
     corners_3d = np.dot(R, np.vstack([x_corners, y_corners, z_corners]))
-    corners_3d[0, :] = corners_3d[0, :] + center[0];
-    corners_3d[1, :] = corners_3d[1, :] + center[1];
-    corners_3d[2, :] = corners_3d[2, :] + center[2];
+    corners_3d[0, :] = corners_3d[0, :] + center[0]
+    corners_3d[1, :] = corners_3d[1, :] + center[1]
+    corners_3d[2, :] = corners_3d[2, :] + center[2]
     corners_3d = np.transpose(corners_3d)
     return corners_3d
 
@@ -323,10 +349,10 @@ def compute_box3d_iou(center_pred,
     '''
     batch_size = heading_logits.shape[0]
     heading_class = np.argmax(heading_logits, 1)  # B
-    heading_residual = np.array([heading_residuals[i, heading_class[i]] \
+    heading_residual = np.array([heading_residuals[i, heading_class[i]]
                                  for i in range(batch_size)])  # B,
     size_class = np.argmax(size_logits, 1)  # B
-    size_residual = np.vstack([size_residuals[i, size_class[i], :] \
+    size_residual = np.vstack([size_residuals[i, size_class[i], :]
                                for i in range(batch_size)])
 
     iou2d_list = []
@@ -339,7 +365,8 @@ def compute_box3d_iou(center_pred,
 
         heading_angle_label = class2angle(heading_class_label[i],
                                           heading_residual_label[i], NUM_HEADING_BIN)
-        box_size_label = class2size(size_class_label[i], size_residual_label[i])
+        box_size_label = class2size(
+            size_class_label[i], size_residual_label[i])
         corners_3d_label = get_3d_box(box_size_label,
                                       heading_angle_label, center_label[i])
 
@@ -347,15 +374,16 @@ def compute_box3d_iou(center_pred,
         iou3d_list.append(iou_3d)
         iou2d_list.append(iou_2d)
     return np.array(iou2d_list, dtype=np.float32), \
-           np.array(iou3d_list, dtype=np.float32)
+        np.array(iou3d_list, dtype=np.float32)
 
 
-def from_prediction_to_label_format(center, angle_class, angle_res, \
+def from_prediction_to_label_format(center, angle_class, angle_res,
                                     size_class, size_res, rot_angle):
     ''' Convert predicted box parameters to label format. '''
     l, w, h = class2size(size_class, size_res)
     ry = class2angle(angle_class, angle_res, NUM_HEADING_BIN) + rot_angle
-    tx, ty, tz = rotate_pc_along_y(np.expand_dims(center, 0), -rot_angle).squeeze()
+    tx, ty, tz = rotate_pc_along_y(
+        np.expand_dims(center, 0), -rot_angle).squeeze()
     ty += h / 2.0
     return h, w, l, tx, ty, tz, ry
 
@@ -371,19 +399,23 @@ if __name__ == '__main__':
                              rotate_to_center=True, random_flip=True, random_shift=True)
     for i in range(len(dataset)):
         data = dataset[i]
-        print(('Center: ', data[2], \
-               'angle_class: ', data[3], 'angle_res:', data[4], \
-               'size_class: ', data[5], 'size_residual:', data[6], \
+        print(('Center: ', data[2],
+               'angle_class: ', data[3], 'angle_res:', data[4],
+               'size_class: ', data[5], 'size_residual:', data[6],
                'real_size:', g_type_mean_size[g_class2type[data[5]]] + data[6]))
         print(('Frustum angle: ', dataset.frustum_angle_list[i]))
         median_list.append(np.median(data[0][:, 0]))
         print((data[2], dataset.box3d_list[i], median_list[-1]))
-        box3d_from_label = get_3d_box(class2size(data[5], data[6]), class2angle(data[3], data[4], 12), data[2])
+        box3d_from_label = get_3d_box(class2size(
+            data[5], data[6]), class2angle(data[3], data[4], 12), data[2])
         ps = data[0]
         seg = data[1]
-        fig = mlab.figure(figure=None, bgcolor=(0.4, 0.4, 0.4), fgcolor=None, engine=None, size=(1000, 500))
-        mlab.points3d(ps[:, 0], ps[:, 1], ps[:, 2], seg, mode='point', colormap='gnuplot', scale_factor=1, figure=fig)
-        mlab.points3d(0, 0, 0, color=(1, 1, 1), mode='sphere', scale_factor=0.2, figure=fig)
+        fig = mlab.figure(figure=None, bgcolor=(0.4, 0.4, 0.4),
+                          fgcolor=None, engine=None, size=(1000, 500))
+        mlab.points3d(ps[:, 0], ps[:, 1], ps[:, 2], seg, mode='point',
+                      colormap='gnuplot', scale_factor=1, figure=fig)
+        mlab.points3d(0, 0, 0, color=(1, 1, 1), mode='sphere',
+                      scale_factor=0.2, figure=fig)
         draw_gt_boxes3d([box3d_from_label], fig, color=(1, 0, 0))
         mlab.orientation_axes()
         raw_input()

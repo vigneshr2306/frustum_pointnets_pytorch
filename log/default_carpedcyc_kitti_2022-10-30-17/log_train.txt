@@ -1,0 +1,1061 @@
+Namespace(batch_size=32, ckpt=None, dataset='kitti', debug=False, decay_rate=0.7, decay_step=20, learning_rate=0.001, log_dir='log', max_epoch=150, model='frustum_pointnets_v1_old', momentum=0.9, name='default', no_intensity=False, num_point=1024, objtype='carpedcyc', optimizer='adam', restore_model_path=None, return_all_loss=False, sensor='CAM_FRONT', train_sets='train', val_sets='val', weight_decay=0.0)
+pid: 30417
+name has been existed
+**** EPOCH 001 ****
+Epoch 1/150:
+[1: 2297/2298] train loss: 0.453102
+segmentation accuracy: 0.818938
+box IoU(ground/3D): 0.494419/0.442584
+box estimation accuracy (IoU=0.7): 0.172308
+[1] [94mtest[0m loss: 0.288190
+[94mtest[0m segmentation accuracy: 0.856502
+[94mtest[0m box IoU(ground/3D): 0.567269/0.520559
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.256848
+learning rate: 0.001000
+Best Test acc: 0.256848(Epoch 1)
+**** EPOCH 002 ****
+Epoch 2/150:
+[2: 2297/2298] train loss: 0.272647
+segmentation accuracy: 0.865969
+box IoU(ground/3D): 0.590043/0.537064
+box estimation accuracy (IoU=0.7): 0.291587
+[2] [94mtest[0m loss: 0.284113
+[94mtest[0m segmentation accuracy: 0.875372
+[94mtest[0m box IoU(ground/3D): 0.618410/0.569394
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.298929
+learning rate: 0.001000
+Best Test acc: 0.298929(Epoch 2)
+**** EPOCH 003 ****
+Epoch 3/150:
+[3: 2297/2298] train loss: 0.231403
+segmentation accuracy: 0.877970
+box IoU(ground/3D): 0.619455/0.566348
+box estimation accuracy (IoU=0.7): 0.351717
+[3] [94mtest[0m loss: 0.209847
+[94mtest[0m segmentation accuracy: 0.861417
+[94mtest[0m box IoU(ground/3D): 0.644331/0.592239
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.389185
+learning rate: 0.001000
+Best Test acc: 0.389185(Epoch 3)
+**** EPOCH 004 ****
+Epoch 4/150:
+[4: 2297/2298] train loss: 0.207929
+segmentation accuracy: 0.886353
+box IoU(ground/3D): 0.641066/0.587153
+box estimation accuracy (IoU=0.7): 0.391059
+[4] [94mtest[0m loss: 0.179274
+[94mtest[0m segmentation accuracy: 0.879412
+[94mtest[0m box IoU(ground/3D): 0.653291/0.601831
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.401565
+learning rate: 0.001000
+Best Test acc: 0.401565(Epoch 4)
+**** EPOCH 005 ****
+Epoch 5/150:
+[5: 2297/2298] train loss: 0.192490
+segmentation accuracy: 0.891797
+box IoU(ground/3D): 0.657406/0.603354
+box estimation accuracy (IoU=0.7): 0.430116
+[5] [94mtest[0m loss: 0.179022
+[94mtest[0m segmentation accuracy: 0.889235
+[94mtest[0m box IoU(ground/3D): 0.690164/0.635937
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.503175
+learning rate: 0.001000
+Best Test acc: 0.503175(Epoch 5)
+**** EPOCH 006 ****
+Epoch 6/150:
+[6: 2297/2298] train loss: 0.177430
+segmentation accuracy: 0.896639
+box IoU(ground/3D): 0.670509/0.616156
+box estimation accuracy (IoU=0.7): 0.459583
+[6] [94mtest[0m loss: 0.170448
+[94mtest[0m segmentation accuracy: 0.886333
+[94mtest[0m box IoU(ground/3D): 0.656267/0.608922
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.429854
+learning rate: 0.001000
+Best Test acc: 0.503175(Epoch 5)
+**** EPOCH 007 ****
+Epoch 7/150:
+[7: 2297/2298] train loss: 0.171495
+segmentation accuracy: 0.900029
+box IoU(ground/3D): 0.679507/0.624755
+box estimation accuracy (IoU=0.7): 0.475731
+[7] [94mtest[0m loss: 0.176664
+[94mtest[0m segmentation accuracy: 0.883586
+[94mtest[0m box IoU(ground/3D): 0.683052/0.628588
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.471486
+learning rate: 0.001000
+Best Test acc: 0.503175(Epoch 5)
+**** EPOCH 008 ****
+Epoch 8/150:
+[8: 2297/2298] train loss: 0.157331
+segmentation accuracy: 0.903371
+box IoU(ground/3D): 0.689608/0.634892
+box estimation accuracy (IoU=0.7): 0.498381
+[8] [94mtest[0m loss: 0.153093
+[94mtest[0m segmentation accuracy: 0.896212
+[94mtest[0m box IoU(ground/3D): 0.688248/0.637067
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.499134
+learning rate: 0.001000
+Best Test acc: 0.503175(Epoch 5)
+**** EPOCH 009 ****
+Epoch 9/150:
+[9: 2297/2298] train loss: 0.159355
+segmentation accuracy: 0.905483
+box IoU(ground/3D): 0.694603/0.640009
+box estimation accuracy (IoU=0.7): 0.512461
+[9] [94mtest[0m loss: 0.161470
+[94mtest[0m segmentation accuracy: 0.887071
+[94mtest[0m box IoU(ground/3D): 0.690123/0.638080
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.508949
+learning rate: 0.001000
+Best Test acc: 0.508949(Epoch 9)
+**** EPOCH 010 ****
+Epoch 10/150:
+[10: 2297/2298] train loss: 0.152089
+segmentation accuracy: 0.907895
+box IoU(ground/3D): 0.700182/0.645553
+box estimation accuracy (IoU=0.7): 0.523671
+[10] [94mtest[0m loss: 0.166414
+[94mtest[0m segmentation accuracy: 0.889819
+[94mtest[0m box IoU(ground/3D): 0.697441/0.643669
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.520239
+learning rate: 0.001000
+Best Test acc: 0.520239(Epoch 10)
+**** EPOCH 011 ****
+Epoch 11/150:
+[11: 2297/2298] train loss: 0.150159
+segmentation accuracy: 0.910207
+box IoU(ground/3D): 0.704802/0.650492
+box estimation accuracy (IoU=0.7): 0.532513
+[11] [94mtest[0m loss: 0.160722
+[94mtest[0m segmentation accuracy: 0.883733
+[94mtest[0m box IoU(ground/3D): 0.706170/0.654815
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.544358
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 012 ****
+Epoch 12/150:
+[12: 2297/2298] train loss: 0.148181
+segmentation accuracy: 0.912162
+box IoU(ground/3D): 0.708324/0.653649
+box estimation accuracy (IoU=0.7): 0.541574
+[12] [94mtest[0m loss: 0.185430
+[94mtest[0m segmentation accuracy: 0.886937
+[94mtest[0m box IoU(ground/3D): 0.694340/0.641709
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.526461
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 013 ****
+Epoch 13/150:
+[13: 2297/2298] train loss: 0.141534
+segmentation accuracy: 0.913923
+box IoU(ground/3D): 0.712894/0.658197
+box estimation accuracy (IoU=0.7): 0.550865
+[13] [94mtest[0m loss: 0.160396
+[94mtest[0m segmentation accuracy: 0.888538
+[94mtest[0m box IoU(ground/3D): 0.699745/0.647024
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.529091
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 014 ****
+Epoch 14/150:
+[14: 2297/2298] train loss: 0.136995
+segmentation accuracy: 0.915902
+box IoU(ground/3D): 0.717595/0.662589
+box estimation accuracy (IoU=0.7): 0.562075
+[14] [94mtest[0m loss: 0.158734
+[94mtest[0m segmentation accuracy: 0.891955
+[94mtest[0m box IoU(ground/3D): 0.694143/0.642094
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.506575
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 015 ****
+Epoch 15/150:
+[15: 2297/2298] train loss: 0.135634
+segmentation accuracy: 0.917398
+box IoU(ground/3D): 0.720872/0.665940
+box estimation accuracy (IoU=0.7): 0.568197
+[15] [94mtest[0m loss: 0.151490
+[94mtest[0m segmentation accuracy: 0.901960
+[94mtest[0m box IoU(ground/3D): 0.694830/0.642957
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.503111
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 016 ****
+Epoch 16/150:
+[16: 2297/2298] train loss: 0.135961
+segmentation accuracy: 0.918836
+box IoU(ground/3D): 0.721668/0.666939
+box estimation accuracy (IoU=0.7): 0.571870
+[16] [94mtest[0m loss: 0.159241
+[94mtest[0m segmentation accuracy: 0.896808
+[94mtest[0m box IoU(ground/3D): 0.700259/0.648920
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.526076
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 017 ****
+Epoch 17/150:
+[17: 2297/2298] train loss: 0.134508
+segmentation accuracy: 0.919937
+box IoU(ground/3D): 0.725841/0.670854
+box estimation accuracy (IoU=0.7): 0.579474
+[17] [94mtest[0m loss: 0.161124
+[94mtest[0m segmentation accuracy: 0.899145
+[94mtest[0m box IoU(ground/3D): 0.699339/0.648325
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.517993
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 018 ****
+Epoch 18/150:
+[18: 2297/2298] train loss: 0.127663
+segmentation accuracy: 0.921333
+box IoU(ground/3D): 0.728251/0.673239
+box estimation accuracy (IoU=0.7): 0.584195
+[18] [94mtest[0m loss: 0.192883
+[94mtest[0m segmentation accuracy: 0.885364
+[94mtest[0m box IoU(ground/3D): 0.655974/0.604495
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.409006
+learning rate: 0.001000
+Best Test acc: 0.544358(Epoch 11)
+**** EPOCH 019 ****
+Epoch 19/150:
+[19: 2297/2298] train loss: 0.124775
+segmentation accuracy: 0.922814
+box IoU(ground/3D): 0.730842/0.675746
+box estimation accuracy (IoU=0.7): 0.589623
+[19] [94mtest[0m loss: 0.142593
+[94mtest[0m segmentation accuracy: 0.895910
+[94mtest[0m box IoU(ground/3D): 0.720291/0.669026
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.567708
+learning rate: 0.001000
+Best Test acc: 0.567708(Epoch 19)
+**** EPOCH 020 ****
+Epoch 20/150:
+[20: 2297/2298] train loss: 0.125843
+segmentation accuracy: 0.923743
+box IoU(ground/3D): 0.732970/0.678193
+box estimation accuracy (IoU=0.7): 0.596221
+[20] [94mtest[0m loss: 0.154143
+[94mtest[0m segmentation accuracy: 0.892451
+[94mtest[0m box IoU(ground/3D): 0.712862/0.663624
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.570338
+learning rate: 0.001000
+Best Test acc: 0.570338(Epoch 20)
+**** EPOCH 021 ****
+Epoch 21/150:
+[21: 2297/2298] train loss: 0.116082
+segmentation accuracy: 0.927904
+box IoU(ground/3D): 0.743086/0.688227
+box estimation accuracy (IoU=0.7): 0.619048
+[21] [94mtest[0m loss: 0.143221
+[94mtest[0m segmentation accuracy: 0.901352
+[94mtest[0m box IoU(ground/3D): 0.704415/0.655491
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.534608
+learning rate: 0.000700
+Best Test acc: 0.570338(Epoch 20)
+**** EPOCH 022 ****
+Epoch 22/150:
+[22: 2297/2298] train loss: 0.116372
+segmentation accuracy: 0.928915
+box IoU(ground/3D): 0.744854/0.690431
+box estimation accuracy (IoU=0.7): 0.623823
+[22] [94mtest[0m loss: 0.165485
+[94mtest[0m segmentation accuracy: 0.904008
+[94mtest[0m box IoU(ground/3D): 0.712316/0.664584
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.551222
+learning rate: 0.000700
+Best Test acc: 0.570338(Epoch 20)
+**** EPOCH 023 ****
+Epoch 23/150:
+[23: 2297/2298] train loss: 0.109717
+segmentation accuracy: 0.929686
+box IoU(ground/3D): 0.747679/0.693117
+box estimation accuracy (IoU=0.7): 0.628693
+[23] [94mtest[0m loss: 0.152136
+[94mtest[0m segmentation accuracy: 0.901262
+[94mtest[0m box IoU(ground/3D): 0.716404/0.668327
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.578998
+learning rate: 0.000700
+Best Test acc: 0.578998(Epoch 23)
+**** EPOCH 024 ****
+Epoch 24/150:
+[24: 2297/2298] train loss: 0.110854
+segmentation accuracy: 0.930617
+box IoU(ground/3D): 0.748864/0.694268
+box estimation accuracy (IoU=0.7): 0.633591
+[24] [94mtest[0m loss: 0.150713
+[94mtest[0m segmentation accuracy: 0.901019
+[94mtest[0m box IoU(ground/3D): 0.725011/0.677642
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.597024
+learning rate: 0.000700
+Best Test acc: 0.597024(Epoch 24)
+**** EPOCH 025 ****
+Epoch 25/150:
+[25: 2297/2298] train loss: 0.110205
+segmentation accuracy: 0.931399
+box IoU(ground/3D): 0.749777/0.695348
+box estimation accuracy (IoU=0.7): 0.635155
+[25] [94mtest[0m loss: 0.142109
+[94mtest[0m segmentation accuracy: 0.902136
+[94mtest[0m box IoU(ground/3D): 0.727483/0.676306
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.586247
+learning rate: 0.000700
+Best Test acc: 0.597024(Epoch 24)
+**** EPOCH 026 ****
+Epoch 26/150:
+[26: 2297/2298] train loss: 0.108062
+segmentation accuracy: 0.931806
+box IoU(ground/3D): 0.751674/0.697328
+box estimation accuracy (IoU=0.7): 0.638556
+[26] [94mtest[0m loss: 0.139294
+[94mtest[0m segmentation accuracy: 0.903372
+[94mtest[0m box IoU(ground/3D): 0.728927/0.680155
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.601706
+learning rate: 0.000700
+Best Test acc: 0.601706(Epoch 26)
+**** EPOCH 027 ****
+Epoch 27/150:
+[27: 2297/2298] train loss: 0.109518
+segmentation accuracy: 0.932516
+box IoU(ground/3D): 0.752549/0.697997
+box estimation accuracy (IoU=0.7): 0.640039
+[27] [94mtest[0m loss: 0.174996
+[94mtest[0m segmentation accuracy: 0.891559
+[94mtest[0m box IoU(ground/3D): 0.688948/0.640393
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.524152
+learning rate: 0.000700
+Best Test acc: 0.601706(Epoch 26)
+**** EPOCH 028 ****
+Epoch 28/150:
+[28: 2297/2298] train loss: 0.109124
+segmentation accuracy: 0.932788
+box IoU(ground/3D): 0.752887/0.698514
+box estimation accuracy (IoU=0.7): 0.643114
+[28] [94mtest[0m loss: 0.146347
+[94mtest[0m segmentation accuracy: 0.898527
+[94mtest[0m box IoU(ground/3D): 0.711185/0.662679
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.564950
+learning rate: 0.000700
+Best Test acc: 0.601706(Epoch 26)
+**** EPOCH 029 ****
+Epoch 29/150:
+[29: 2297/2298] train loss: 0.104818
+segmentation accuracy: 0.933763
+box IoU(ground/3D): 0.754769/0.700432
+box estimation accuracy (IoU=0.7): 0.646936
+[29] [94mtest[0m loss: 0.152798
+[94mtest[0m segmentation accuracy: 0.900251
+[94mtest[0m box IoU(ground/3D): 0.711145/0.662371
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.556482
+learning rate: 0.000700
+Best Test acc: 0.601706(Epoch 26)
+**** EPOCH 030 ****
+Epoch 30/150:
+[30: 2297/2298] train loss: 0.106478
+segmentation accuracy: 0.934511
+box IoU(ground/3D): 0.754873/0.700324
+box estimation accuracy (IoU=0.7): 0.646447
+[30] [94mtest[0m loss: 0.135751
+[94mtest[0m segmentation accuracy: 0.902654
+[94mtest[0m box IoU(ground/3D): 0.726477/0.677337
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.588492
+learning rate: 0.000700
+Best Test acc: 0.601706(Epoch 26)
+**** EPOCH 031 ****
+Epoch 31/150:
+[31: 2297/2298] train loss: 0.103530
+segmentation accuracy: 0.934842
+box IoU(ground/3D): 0.757123/0.702438
+box estimation accuracy (IoU=0.7): 0.649616
+[31] [94mtest[0m loss: 0.148836
+[94mtest[0m segmentation accuracy: 0.895578
+[94mtest[0m box IoU(ground/3D): 0.713549/0.666040
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.580922
+learning rate: 0.000700
+Best Test acc: 0.601706(Epoch 26)
+**** EPOCH 032 ****
+Epoch 32/150:
+[32: 2297/2298] train loss: 0.107117
+segmentation accuracy: 0.935298
+box IoU(ground/3D): 0.757476/0.703053
+box estimation accuracy (IoU=0.7): 0.651902
+[32] [94mtest[0m loss: 0.149976
+[94mtest[0m segmentation accuracy: 0.903092
+[94mtest[0m box IoU(ground/3D): 0.731361/0.682361
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.613125
+learning rate: 0.000700
+save to:log/default_carpedcyc_kitti_2022-10-30-17/acc0.613125-epoch031.pth
+Saving model to log/default_carpedcyc_kitti_2022-10-30-17/acc0.613125-epoch031.pth
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 033 ****
+Epoch 33/150:
+[33: 2297/2298] train loss: 0.100679
+segmentation accuracy: 0.935626
+box IoU(ground/3D): 0.758793/0.704331
+box estimation accuracy (IoU=0.7): 0.653915
+[33] [94mtest[0m loss: 0.148125
+[94mtest[0m segmentation accuracy: 0.902769
+[94mtest[0m box IoU(ground/3D): 0.700271/0.651659
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.532940
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 034 ****
+Epoch 34/150:
+[34: 2297/2298] train loss: 0.102013
+segmentation accuracy: 0.936109
+box IoU(ground/3D): 0.759301/0.704966
+box estimation accuracy (IoU=0.7): 0.655738
+[34] [94mtest[0m loss: 0.141527
+[94mtest[0m segmentation accuracy: 0.904203
+[94mtest[0m box IoU(ground/3D): 0.707061/0.658020
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.555007
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 035 ****
+Epoch 35/150:
+[35: 2297/2298] train loss: 0.100728
+segmentation accuracy: 0.936566
+box IoU(ground/3D): 0.760459/0.706296
+box estimation accuracy (IoU=0.7): 0.660132
+[35] [94mtest[0m loss: 0.157505
+[94mtest[0m segmentation accuracy: 0.898363
+[94mtest[0m box IoU(ground/3D): 0.696714/0.647499
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.517352
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 036 ****
+Epoch 36/150:
+[36: 2297/2298] train loss: 0.099237
+segmentation accuracy: 0.937248
+box IoU(ground/3D): 0.762447/0.708184
+box estimation accuracy (IoU=0.7): 0.664077
+[36] [94mtest[0m loss: 0.148568
+[94mtest[0m segmentation accuracy: 0.902822
+[94mtest[0m box IoU(ground/3D): 0.711083/0.661639
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.559690
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 037 ****
+Epoch 37/150:
+[37: 2297/2298] train loss: 0.101082
+segmentation accuracy: 0.937893
+box IoU(ground/3D): 0.762537/0.707903
+box estimation accuracy (IoU=0.7): 0.663452
+[37] [94mtest[0m loss: 0.148851
+[94mtest[0m segmentation accuracy: 0.900553
+[94mtest[0m box IoU(ground/3D): 0.702644/0.654280
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.535506
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 038 ****
+Epoch 38/150:
+[38: 2297/2298] train loss: 0.100954
+segmentation accuracy: 0.938374
+box IoU(ground/3D): 0.762305/0.707743
+box estimation accuracy (IoU=0.7): 0.662894
+[38] [94mtest[0m loss: 0.146696
+[94mtest[0m segmentation accuracy: 0.898538
+[94mtest[0m box IoU(ground/3D): 0.726212/0.677429
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.599654
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 039 ****
+Epoch 39/150:
+[39: 2297/2298] train loss: 0.097339
+segmentation accuracy: 0.938434
+box IoU(ground/3D): 0.763777/0.709290
+box estimation accuracy (IoU=0.7): 0.665234
+[39] [94mtest[0m loss: 0.139100
+[94mtest[0m segmentation accuracy: 0.905199
+[94mtest[0m box IoU(ground/3D): 0.725466/0.676170
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.597216
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 040 ****
+Epoch 40/150:
+[40: 2297/2298] train loss: 0.098893
+segmentation accuracy: 0.938736
+box IoU(ground/3D): 0.764186/0.709716
+box estimation accuracy (IoU=0.7): 0.668948
+[40] [94mtest[0m loss: 0.163741
+[94mtest[0m segmentation accuracy: 0.900442
+[94mtest[0m box IoU(ground/3D): 0.706834/0.657829
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.545641
+learning rate: 0.000700
+Best Test acc: 0.613125(Epoch 32)
+**** EPOCH 041 ****
+Epoch 41/150:
+[41: 2297/2298] train loss: 0.096207
+segmentation accuracy: 0.941202
+box IoU(ground/3D): 0.769482/0.715533
+box estimation accuracy (IoU=0.7): 0.682048
+[41] [94mtest[0m loss: 0.141991
+[94mtest[0m segmentation accuracy: 0.903446
+[94mtest[0m box IoU(ground/3D): 0.735965/0.687359
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.615242
+learning rate: 0.000490
+save to:log/default_carpedcyc_kitti_2022-10-30-17/acc0.615242-epoch040.pth
+Saving model to log/default_carpedcyc_kitti_2022-10-30-17/acc0.615242-epoch040.pth
+Best Test acc: 0.615242(Epoch 41)
+**** EPOCH 042 ****
+Epoch 42/150:
+[42: 2297/2298] train loss: 0.092427
+segmentation accuracy: 0.942203
+box IoU(ground/3D): 0.772138/0.718013
+box estimation accuracy (IoU=0.7): 0.685490
+[42] [94mtest[0m loss: 0.132910
+[94mtest[0m segmentation accuracy: 0.903923
+[94mtest[0m box IoU(ground/3D): 0.729960/0.682076
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.601129
+learning rate: 0.000490
+Best Test acc: 0.615242(Epoch 41)
+**** EPOCH 043 ****
+Epoch 43/150:
+[43: 2297/2298] train loss: 0.093284
+segmentation accuracy: 0.942530
+box IoU(ground/3D): 0.772713/0.718601
+box estimation accuracy (IoU=0.7): 0.686265
+[43] [94mtest[0m loss: 0.152302
+[94mtest[0m segmentation accuracy: 0.900504
+[94mtest[0m box IoU(ground/3D): 0.709909/0.660220
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.551799
+learning rate: 0.000490
+Best Test acc: 0.615242(Epoch 41)
+**** EPOCH 044 ****
+Epoch 44/150:
+[44: 2297/2298] train loss: 0.091760
+segmentation accuracy: 0.942965
+box IoU(ground/3D): 0.774171/0.720101
+box estimation accuracy (IoU=0.7): 0.691585
+[44] [94mtest[0m loss: 0.142102
+[94mtest[0m segmentation accuracy: 0.902062
+[94mtest[0m box IoU(ground/3D): 0.718639/0.671130
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.574508
+learning rate: 0.000490
+Best Test acc: 0.615242(Epoch 41)
+**** EPOCH 045 ****
+Epoch 45/150:
+[45: 2297/2298] train loss: 0.088738
+segmentation accuracy: 0.943064
+box IoU(ground/3D): 0.773731/0.719736
+box estimation accuracy (IoU=0.7): 0.689694
+[45] [94mtest[0m loss: 0.157469
+[94mtest[0m segmentation accuracy: 0.900748
+[94mtest[0m box IoU(ground/3D): 0.736706/0.687244
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.617423
+learning rate: 0.000490
+save to:log/default_carpedcyc_kitti_2022-10-30-17/acc0.617423-epoch044.pth
+Saving model to log/default_carpedcyc_kitti_2022-10-30-17/acc0.617423-epoch044.pth
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 046 ****
+Epoch 46/150:
+[46: 2297/2298] train loss: 0.088776
+segmentation accuracy: 0.943634
+box IoU(ground/3D): 0.775026/0.721084
+box estimation accuracy (IoU=0.7): 0.693231
+[46] [94mtest[0m loss: 0.149372
+[94mtest[0m segmentation accuracy: 0.903261
+[94mtest[0m box IoU(ground/3D): 0.734210/0.687416
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.616524
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 047 ****
+Epoch 47/150:
+[47: 2297/2298] train loss: 0.087173
+segmentation accuracy: 0.943776
+box IoU(ground/3D): 0.775345/0.721204
+box estimation accuracy (IoU=0.7): 0.693190
+[47] [94mtest[0m loss: 0.146606
+[94mtest[0m segmentation accuracy: 0.902539
+[94mtest[0m box IoU(ground/3D): 0.734539/0.686093
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.609404
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 048 ****
+Epoch 48/150:
+[48: 2297/2298] train loss: 0.084571
+segmentation accuracy: 0.944173
+box IoU(ground/3D): 0.776309/0.721970
+box estimation accuracy (IoU=0.7): 0.694659
+[48] [94mtest[0m loss: 0.142314
+[94mtest[0m segmentation accuracy: 0.900272
+[94mtest[0m box IoU(ground/3D): 0.720493/0.672017
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.578870
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 049 ****
+Epoch 49/150:
+[49: 2297/2298] train loss: 0.090170
+segmentation accuracy: 0.944326
+box IoU(ground/3D): 0.776367/0.722361
+box estimation accuracy (IoU=0.7): 0.695503
+[49] [94mtest[0m loss: 0.136872
+[94mtest[0m segmentation accuracy: 0.905564
+[94mtest[0m box IoU(ground/3D): 0.733762/0.685202
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.607031
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 050 ****
+Epoch 50/150:
+[50: 2297/2298] train loss: 0.087834
+segmentation accuracy: 0.944364
+box IoU(ground/3D): 0.775909/0.722061
+box estimation accuracy (IoU=0.7): 0.695462
+[50] [94mtest[0m loss: 0.151192
+[94mtest[0m segmentation accuracy: 0.902032
+[94mtest[0m box IoU(ground/3D): 0.723050/0.674765
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.583232
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 051 ****
+Epoch 51/150:
+[51: 2297/2298] train loss: 0.086527
+segmentation accuracy: 0.944894
+box IoU(ground/3D): 0.777074/0.722927
+box estimation accuracy (IoU=0.7): 0.696836
+[51] [94mtest[0m loss: 0.152151
+[94mtest[0m segmentation accuracy: 0.901159
+[94mtest[0m box IoU(ground/3D): 0.703130/0.655808
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.538649
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 052 ****
+Epoch 52/150:
+[52: 2297/2298] train loss: 0.086315
+segmentation accuracy: 0.945198
+box IoU(ground/3D): 0.776803/0.722818
+box estimation accuracy (IoU=0.7): 0.698359
+[52] [94mtest[0m loss: 0.142838
+[94mtest[0m segmentation accuracy: 0.900504
+[94mtest[0m box IoU(ground/3D): 0.726745/0.678244
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.596061
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 053 ****
+Epoch 53/150:
+[53: 2297/2298] train loss: 0.086991
+segmentation accuracy: 0.945565
+box IoU(ground/3D): 0.778076/0.723956
+box estimation accuracy (IoU=0.7): 0.700631
+[53] [94mtest[0m loss: 0.157072
+[94mtest[0m segmentation accuracy: 0.902692
+[94mtest[0m box IoU(ground/3D): 0.705700/0.656537
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.544486
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 054 ****
+Epoch 54/150:
+[54: 2297/2298] train loss: 0.085184
+segmentation accuracy: 0.945572
+box IoU(ground/3D): 0.777752/0.723571
+box estimation accuracy (IoU=0.7): 0.699815
+[54] [94mtest[0m loss: 0.143136
+[94mtest[0m segmentation accuracy: 0.901824
+[94mtest[0m box IoU(ground/3D): 0.726741/0.677555
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.606197
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 055 ****
+Epoch 55/150:
+[55: 2297/2298] train loss: 0.087865
+segmentation accuracy: 0.945507
+box IoU(ground/3D): 0.777444/0.723679
+box estimation accuracy (IoU=0.7): 0.700033
+[55] [94mtest[0m loss: 0.140190
+[94mtest[0m segmentation accuracy: 0.903116
+[94mtest[0m box IoU(ground/3D): 0.733896/0.687119
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.616589
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 056 ****
+Epoch 56/150:
+[56: 2297/2298] train loss: 0.086062
+segmentation accuracy: 0.946159
+box IoU(ground/3D): 0.779541/0.725254
+box estimation accuracy (IoU=0.7): 0.702032
+[56] [94mtest[0m loss: 0.140521
+[94mtest[0m segmentation accuracy: 0.900511
+[94mtest[0m box IoU(ground/3D): 0.729603/0.681427
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.607415
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 057 ****
+Epoch 57/150:
+[57: 2297/2298] train loss: 0.085368
+segmentation accuracy: 0.946215
+box IoU(ground/3D): 0.779316/0.725252
+box estimation accuracy (IoU=0.7): 0.703053
+[57] [94mtest[0m loss: 0.163571
+[94mtest[0m segmentation accuracy: 0.899812
+[94mtest[0m box IoU(ground/3D): 0.736168/0.686856
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.613638
+learning rate: 0.000490
+Best Test acc: 0.617423(Epoch 45)
+**** EPOCH 058 ****
+Epoch 58/150:
+[58: 2297/2298] train loss: 0.084330
+segmentation accuracy: 0.946415
+box IoU(ground/3D): 0.780025/0.726149
+box estimation accuracy (IoU=0.7): 0.705923
+[58] [94mtest[0m loss: 0.134054
+[94mtest[0m segmentation accuracy: 0.901110
+[94mtest[0m box IoU(ground/3D): 0.741643/0.693883
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.631214
+learning rate: 0.000490
+save to:log/default_carpedcyc_kitti_2022-10-30-17/acc0.631214-epoch057.pth
+Saving model to log/default_carpedcyc_kitti_2022-10-30-17/acc0.631214-epoch057.pth
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 059 ****
+Epoch 59/150:
+[59: 2297/2298] train loss: 0.084484
+segmentation accuracy: 0.946834
+box IoU(ground/3D): 0.780695/0.726705
+box estimation accuracy (IoU=0.7): 0.708059
+[59] [94mtest[0m loss: 0.140852
+[94mtest[0m segmentation accuracy: 0.902602
+[94mtest[0m box IoU(ground/3D): 0.733705/0.685961
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.610944
+learning rate: 0.000490
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 060 ****
+Epoch 60/150:
+[60: 2297/2298] train loss: 0.086719
+segmentation accuracy: 0.946723
+box IoU(ground/3D): 0.780394/0.726404
+box estimation accuracy (IoU=0.7): 0.707474
+[60] [94mtest[0m loss: 0.144675
+[94mtest[0m segmentation accuracy: 0.900538
+[94mtest[0m box IoU(ground/3D): 0.724646/0.676300
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.586439
+learning rate: 0.000490
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 061 ****
+Epoch 61/150:
+[61: 2297/2298] train loss: 0.081400
+segmentation accuracy: 0.948921
+box IoU(ground/3D): 0.785002/0.731571
+box estimation accuracy (IoU=0.7): 0.720983
+[61] [94mtest[0m loss: 0.140722
+[94mtest[0m segmentation accuracy: 0.902471
+[94mtest[0m box IoU(ground/3D): 0.731434/0.684523
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.610623
+learning rate: 0.000343
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 062 ****
+Epoch 62/150:
+[62: 2297/2298] train loss: 0.080386
+segmentation accuracy: 0.948993
+box IoU(ground/3D): 0.785637/0.731904
+box estimation accuracy (IoU=0.7): 0.719609
+[62] [94mtest[0m loss: 0.137196
+[94mtest[0m segmentation accuracy: 0.904611
+[94mtest[0m box IoU(ground/3D): 0.724154/0.674432
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.585220
+learning rate: 0.000343
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 063 ****
+Epoch 63/150:
+[63: 2297/2298] train loss: 0.079125
+segmentation accuracy: 0.949447
+box IoU(ground/3D): 0.786064/0.732448
+box estimation accuracy (IoU=0.7): 0.720112
+[63] [94mtest[0m loss: 0.139721
+[94mtest[0m segmentation accuracy: 0.904402
+[94mtest[0m box IoU(ground/3D): 0.738557/0.690840
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.622426
+learning rate: 0.000343
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 064 ****
+Epoch 64/150:
+[64: 2297/2298] train loss: 0.080398
+segmentation accuracy: 0.949558
+box IoU(ground/3D): 0.786631/0.733037
+box estimation accuracy (IoU=0.7): 0.721867
+[64] [94mtest[0m loss: 0.133643
+[94mtest[0m segmentation accuracy: 0.902219
+[94mtest[0m box IoU(ground/3D): 0.735599/0.687366
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.619668
+learning rate: 0.000343
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 065 ****
+Epoch 65/150:
+[65: 2297/2298] train loss: 0.077705
+segmentation accuracy: 0.950011
+box IoU(ground/3D): 0.788080/0.734341
+box estimation accuracy (IoU=0.7): 0.725431
+[65] [94mtest[0m loss: 0.153752
+[94mtest[0m segmentation accuracy: 0.902608
+[94mtest[0m box IoU(ground/3D): 0.736892/0.687791
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.612419
+learning rate: 0.000343
+Best Test acc: 0.631214(Epoch 58)
+**** EPOCH 066 ****
+Epoch 66/150:
+[66: 2297/2298] train loss: 0.077811
+segmentation accuracy: 0.949747
+box IoU(ground/3D): 0.787675/0.733951
+box estimation accuracy (IoU=0.7): 0.723772
+[66] [94mtest[0m loss: 0.139728
+[94mtest[0m segmentation accuracy: 0.901996
+[94mtest[0m box IoU(ground/3D): 0.742910/0.694668
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.636603
+learning rate: 0.000343
+save to:log/default_carpedcyc_kitti_2022-10-30-17/acc0.636603-epoch065.pth
+Saving model to log/default_carpedcyc_kitti_2022-10-30-17/acc0.636603-epoch065.pth
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 067 ****
+Epoch 67/150:
+[67: 2297/2298] train loss: 0.076335
+segmentation accuracy: 0.950265
+box IoU(ground/3D): 0.788075/0.734388
+box estimation accuracy (IoU=0.7): 0.725050
+[67] [94mtest[0m loss: 0.142245
+[94mtest[0m segmentation accuracy: 0.899959
+[94mtest[0m box IoU(ground/3D): 0.741759/0.692907
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.620181
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 068 ****
+Epoch 68/150:
+[68: 2297/2298] train loss: 0.076621
+segmentation accuracy: 0.950125
+box IoU(ground/3D): 0.788044/0.734337
+box estimation accuracy (IoU=0.7): 0.725526
+[68] [94mtest[0m loss: 0.135024
+[94mtest[0m segmentation accuracy: 0.902863
+[94mtest[0m box IoU(ground/3D): 0.729412/0.682266
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.605940
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 069 ****
+Epoch 69/150:
+[69: 2297/2298] train loss: 0.078723
+segmentation accuracy: 0.950413
+box IoU(ground/3D): 0.787936/0.734280
+box estimation accuracy (IoU=0.7): 0.724465
+[69] [94mtest[0m loss: 0.154766
+[94mtest[0m segmentation accuracy: 0.903637
+[94mtest[0m box IoU(ground/3D): 0.713865/0.663891
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.556867
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 070 ****
+Epoch 70/150:
+[70: 2297/2298] train loss: 0.078368
+segmentation accuracy: 0.950569
+box IoU(ground/3D): 0.788017/0.734520
+box estimation accuracy (IoU=0.7): 0.726316
+[70] [94mtest[0m loss: 0.129012
+[94mtest[0m segmentation accuracy: 0.905294
+[94mtest[0m box IoU(ground/3D): 0.745487/0.697840
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.636218
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 071 ****
+Epoch 71/150:
+[71: 2297/2298] train loss: 0.077950
+segmentation accuracy: 0.950885
+box IoU(ground/3D): 0.788986/0.735247
+box estimation accuracy (IoU=0.7): 0.728479
+[71] [94mtest[0m loss: 0.148571
+[94mtest[0m segmentation accuracy: 0.902385
+[94mtest[0m box IoU(ground/3D): 0.740932/0.693858
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.630188
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 072 ****
+Epoch 72/150:
+[72: 2297/2298] train loss: 0.076185
+segmentation accuracy: 0.950675
+box IoU(ground/3D): 0.789356/0.735623
+box estimation accuracy (IoU=0.7): 0.729050
+[72] [94mtest[0m loss: 0.143480
+[94mtest[0m segmentation accuracy: 0.904113
+[94mtest[0m box IoU(ground/3D): 0.730672/0.681826
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.603631
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 073 ****
+Epoch 73/150:
+[73: 2297/2298] train loss: 0.076767
+segmentation accuracy: 0.950967
+box IoU(ground/3D): 0.789469/0.735708
+box estimation accuracy (IoU=0.7): 0.729200
+[73] [94mtest[0m loss: 0.135718
+[94mtest[0m segmentation accuracy: 0.903261
+[94mtest[0m box IoU(ground/3D): 0.739515/0.691714
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.622554
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 074 ****
+Epoch 74/150:
+[74: 2297/2298] train loss: 0.078679
+segmentation accuracy: 0.951154
+box IoU(ground/3D): 0.789515/0.735715
+box estimation accuracy (IoU=0.7): 0.727758
+[74] [94mtest[0m loss: 0.151253
+[94mtest[0m segmentation accuracy: 0.905051
+[94mtest[0m box IoU(ground/3D): 0.705584/0.658347
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.549747
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 075 ****
+Epoch 75/150:
+[75: 2297/2298] train loss: 0.075512
+segmentation accuracy: 0.951302
+box IoU(ground/3D): 0.789862/0.736068
+box estimation accuracy (IoU=0.7): 0.728669
+[75] [94mtest[0m loss: 0.130057
+[94mtest[0m segmentation accuracy: 0.904636
+[94mtest[0m box IoU(ground/3D): 0.744104/0.696451
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.628328
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 076 ****
+Epoch 76/150:
+[76: 2297/2298] train loss: 0.076195
+segmentation accuracy: 0.951560
+box IoU(ground/3D): 0.790337/0.736566
+box estimation accuracy (IoU=0.7): 0.731363
+[76] [94mtest[0m loss: 0.139001
+[94mtest[0m segmentation accuracy: 0.902081
+[94mtest[0m box IoU(ground/3D): 0.736386/0.688284
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.617102
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 077 ****
+Epoch 77/150:
+[77: 2297/2298] train loss: 0.073271
+segmentation accuracy: 0.951635
+box IoU(ground/3D): 0.790601/0.736950
+box estimation accuracy (IoU=0.7): 0.732682
+[77] [94mtest[0m loss: 0.146884
+[94mtest[0m segmentation accuracy: 0.900359
+[94mtest[0m box IoU(ground/3D): 0.743624/0.695286
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.629931
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 078 ****
+Epoch 78/150:
+[78: 2297/2298] train loss: 0.075571
+segmentation accuracy: 0.951645
+box IoU(ground/3D): 0.791149/0.737724
+box estimation accuracy (IoU=0.7): 0.735131
+[78] [94mtest[0m loss: 0.138928
+[94mtest[0m segmentation accuracy: 0.901816
+[94mtest[0m box IoU(ground/3D): 0.740481/0.691836
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.628135
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 079 ****
+Epoch 79/150:
+[79: 2297/2298] train loss: 0.073087
+segmentation accuracy: 0.951865
+box IoU(ground/3D): 0.790405/0.736611
+box estimation accuracy (IoU=0.7): 0.730941
+[79] [94mtest[0m loss: 0.144076
+[94mtest[0m segmentation accuracy: 0.901131
+[94mtest[0m box IoU(ground/3D): 0.743442/0.695166
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.629033
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 080 ****
+Epoch 80/150:
+[80: 2297/2298] train loss: 0.075426
+segmentation accuracy: 0.951860
+box IoU(ground/3D): 0.791568/0.738156
+box estimation accuracy (IoU=0.7): 0.735852
+[80] [94mtest[0m loss: 0.138667
+[94mtest[0m segmentation accuracy: 0.901232
+[94mtest[0m box IoU(ground/3D): 0.741610/0.691279
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.623003
+learning rate: 0.000343
+Best Test acc: 0.636603(Epoch 66)
+**** EPOCH 081 ****
+Epoch 81/150:
+[81: 2297/2298] train loss: 0.073178
+segmentation accuracy: 0.953304
+box IoU(ground/3D): 0.794030/0.740529
+box estimation accuracy (IoU=0.7): 0.741117
+[81] [94mtest[0m loss: 0.137575
+[94mtest[0m segmentation accuracy: 0.904875
+[94mtest[0m box IoU(ground/3D): 0.745689/0.697534
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.636988
+learning rate: 0.000240
+save to:log/default_carpedcyc_kitti_2022-10-30-17/acc0.636988-epoch080.pth
+Saving model to log/default_carpedcyc_kitti_2022-10-30-17/acc0.636988-epoch080.pth
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 082 ****
+Epoch 82/150:
+[82: 2297/2298] train loss: 0.071521
+segmentation accuracy: 0.953783
+box IoU(ground/3D): 0.794895/0.741657
+box estimation accuracy (IoU=0.7): 0.742477
+[82] [94mtest[0m loss: 0.137555
+[94mtest[0m segmentation accuracy: 0.902052
+[94mtest[0m box IoU(ground/3D): 0.730509/0.683273
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.610559
+learning rate: 0.000240
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 083 ****
+Epoch 83/150:
+[83: 2297/2298] train loss: 0.070319
+segmentation accuracy: 0.953489
+box IoU(ground/3D): 0.794981/0.741635
+box estimation accuracy (IoU=0.7): 0.743960
+[83] [94mtest[0m loss: 0.139887
+[94mtest[0m segmentation accuracy: 0.904357
+[94mtest[0m box IoU(ground/3D): 0.744707/0.696917
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.633139
+learning rate: 0.000240
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 084 ****
+Epoch 84/150:
+[84: 2297/2298] train loss: 0.072385
+segmentation accuracy: 0.953673
+box IoU(ground/3D): 0.795569/0.742335
+box estimation accuracy (IoU=0.7): 0.745579
+[84] [94mtest[0m loss: 0.140313
+[94mtest[0m segmentation accuracy: 0.903599
+[94mtest[0m box IoU(ground/3D): 0.737788/0.689219
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.623709
+learning rate: 0.000240
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 085 ****
+Epoch 85/150:
+[85: 2297/2298] train loss: 0.071627
+segmentation accuracy: 0.953761
+box IoU(ground/3D): 0.796478/0.743252
+box estimation accuracy (IoU=0.7): 0.748898
+[85] [94mtest[0m loss: 0.142533
+[94mtest[0m segmentation accuracy: 0.903860
+[94mtest[0m box IoU(ground/3D): 0.738080/0.690302
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.620822
+learning rate: 0.000240
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 086 ****
+Epoch 86/150:
+[86: 2297/2298] train loss: 0.071895
+segmentation accuracy: 0.954084
+box IoU(ground/3D): 0.795230/0.741780
+box estimation accuracy (IoU=0.7): 0.743552
+[86] [94mtest[0m loss: 0.148338
+[94mtest[0m segmentation accuracy: 0.900920
+[94mtest[0m box IoU(ground/3D): 0.736870/0.689543
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.625698
+learning rate: 0.000240
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 087 ****
+Epoch 87/150:
+[87: 2297/2298] train loss: 0.071834
+segmentation accuracy: 0.953794
+box IoU(ground/3D): 0.796223/0.742758
+box estimation accuracy (IoU=0.7): 0.745660
+[87] [94mtest[0m loss: 0.146878
+[94mtest[0m segmentation accuracy: 0.899523
+[94mtest[0m box IoU(ground/3D): 0.739300/0.691568
+[94mtest[0m box estimation accuracy (IoU=0.7): 0.622362
+learning rate: 0.000240
+Best Test acc: 0.636988(Epoch 81)
+**** EPOCH 088 ****
+Epoch 88/150:
